@@ -1,3 +1,5 @@
+from datetime import date
+
 import pandas as pd
 import pickle
 
@@ -20,13 +22,13 @@ def read_dataframe(filename):
 
     return df
 
-def train():
-    df_train = read_dataframe(
-        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-01.parquet"
-    )
-    df_val = read_dataframe(
-        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-02.parquet"
-    )
+
+def train(train_date: date, val_date: date, out_path: str):
+    base_url = "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_{year}-{month:02d}.parquet"
+    train_url = base_url.format(year=train_date.year, month=train_date.month)
+    val_url = base_url.format(year=val_date.year, month=val_date.month)
+    df_train = read_dataframe(train_url)
+    df_val = read_dataframe(val_url)
     print(len(df_train), len(df_val))
 
     categorical = ["PULocationID", "DOLocationID"]
@@ -47,8 +49,12 @@ def train():
 
     print(mean_squared_error(y_val, y_pred, squared=False))
 
-    with open("lin_reg.bin", "wb") as f_out:
+    with open(out_path, "wb") as f_out:
         pickle.dump(pipeline, f_out)
 
+
 if __name__ == "__main__":
-    train()
+    train_date = date(2022, 1, 1)
+    val_date = date(2022, 2, 1)
+    out_path = "model.pkl"
+    train(train_date=train_date, val_date=val_date, out_path=out_path)
