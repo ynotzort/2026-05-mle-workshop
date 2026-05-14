@@ -19,41 +19,44 @@ def read_dataframe(filename):
 
     return df
 
-
-df_train = read_dataframe(
-    "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-01.parquet"
-)
-df_val = read_dataframe(
-    "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-02.parquet"
-)
-
-
-print(len(df_train), len(df_val))
+def train():
+    df_train = read_dataframe(
+        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-01.parquet"
+    )
+    df_val = read_dataframe(
+        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-02.parquet"
+    )
 
 
-categorical = ["PULocationID", "DOLocationID"]
-numerical = ["trip_distance"]
-
-dv = DictVectorizer()
-
-train_dicts = df_train[categorical + numerical].to_dict(orient="records")
-X_train = dv.fit_transform(train_dicts)
-
-val_dicts = df_val[categorical + numerical].to_dict(orient="records")
-X_val = dv.transform(val_dicts)
+    print(len(df_train), len(df_val))
 
 
-target = "duration"
-y_train = df_train[target].values
-y_val = df_val[target].values
+    categorical = ["PULocationID", "DOLocationID"]
+    numerical = ["trip_distance"]
+
+    dv = DictVectorizer()
+
+    train_dicts = df_train[categorical + numerical].to_dict(orient="records")
+    X_train = dv.fit_transform(train_dicts)
+
+    val_dicts = df_val[categorical + numerical].to_dict(orient="records")
+    X_val = dv.transform(val_dicts)
 
 
-lr = LinearRegression()
-lr.fit(X_train, y_train)
+    target = "duration"
+    y_train = df_train[target].values
+    y_val = df_val[target].values
 
-y_pred = lr.predict(X_val)
 
-print(mean_squared_error(y_val, y_pred, squared=False))
+    lr = LinearRegression()
+    lr.fit(X_train, y_train)
 
-with open("lin_reg.bin", "wb") as f_out:
-    pickle.dump((dv, lr), f_out)
+    y_pred = lr.predict(X_val)
+
+    print(mean_squared_error(y_val, y_pred, squared=False))
+
+    with open("lin_reg.bin", "wb") as f_out:
+        pickle.dump((dv, lr), f_out)
+
+if __name__ == "__main__":
+    train()
