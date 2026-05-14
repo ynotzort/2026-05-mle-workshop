@@ -55,3 +55,4 @@ cd ..
 - parametrize the train function
 - use argparse to parse arguments
     - alternatives are https://github.com/fastapi/typer and click and fire
+- add docstrings and typing

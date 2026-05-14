@@ -10,7 +10,19 @@ from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import make_pipeline
 
 
-def read_dataframe(filename):
+def read_dataframe(filename: str) -> pd.DataFrame:
+    """
+    Read and preprocess a parquet dataframe.
+
+    Computes trip duration in minutes, filters trips between
+    1 and 60 minutes, and converts location IDs to strings.
+
+    Args:
+        filename: Path to the parquet file.
+
+    Returns:
+        Preprocessed pandas DataFrame.
+    """
     df = pd.read_parquet(filename)
 
     df["duration"] = df.lpep_dropoff_datetime - df.lpep_pickup_datetime
@@ -20,11 +32,22 @@ def read_dataframe(filename):
 
     categorical = ["PULocationID", "DOLocationID"]
     df[categorical] = df[categorical].astype(str)
-
     return df
 
 
-def train(train_date: date, val_date: date, out_path: str):
+def train(train_date: date, val_date: date, out_path: str) -> float:
+    """
+    Train a linear regression model on green taxi trip data.
+
+    Downloads parquet data for the specified train and validation months,
+    preprocesses it, trains a pipeline with a DictVectorizer and LinearRegression,
+    evaluates RMSE on the validation set, and saves the trained model.
+
+    Args:
+        train_date (date): Month/year for the training data.
+        val_date (date): Month/year for the validation data.
+        out_path (str): File path to save the trained model (pickle).
+    """
     base_url = "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_{year}-{month:02d}.parquet"
     train_url = base_url.format(year=train_date.year, month=train_date.month)
     val_url = base_url.format(year=val_date.year, month=val_date.month)
@@ -48,10 +71,12 @@ def train(train_date: date, val_date: date, out_path: str):
     pipeline.fit(train_dicts, y_train)
     y_pred = pipeline.predict(val_dicts)
 
-    print(mean_squared_error(y_val, y_pred, squared=False))
+    mse = mean_squared_error(y_val, y_pred, squared=False)
+    print(mse)
 
     with open(out_path, "wb") as f_out:
         pickle.dump(pipeline, f_out)
+    return mse
 
 
 if __name__ == "__main__":
