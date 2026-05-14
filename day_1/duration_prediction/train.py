@@ -23,16 +23,21 @@ def read_dataframe(filename: str) -> pd.DataFrame:
     Returns:
         Preprocessed pandas DataFrame.
     """
-    df = pd.read_parquet(filename)
+    try:
+        df = pd.read_parquet(filename)
 
-    df["duration"] = df.lpep_dropoff_datetime - df.lpep_pickup_datetime
-    df.duration = df.duration.dt.total_seconds() / 60
+        df["duration"] = df.lpep_dropoff_datetime - df.lpep_pickup_datetime
+        df.duration = df.duration.dt.total_seconds() / 60
 
-    df = df[(df.duration >= 1) & (df.duration <= 60)]
+        df = df[(df.duration >= 1) & (df.duration <= 60)]
 
-    categorical = ["PULocationID", "DOLocationID"]
-    df[categorical] = df[categorical].astype(str)
-    return df
+        categorical = ["PULocationID", "DOLocationID"]
+        df[categorical] = df[categorical].astype(str)
+        return df
+    except Exception as e:
+        print(f"ERROR: Could not get file: {filename}")
+        print(e)
+        raise e
 
 
 def train(train_date: date, val_date: date, out_path: str) -> float:
