@@ -53,3 +53,5 @@ cd ..
 - create a train function and remove top-level statements and add `if __name__ == "__main__":`
 - add the pipeline code
 - parametrize the train function
+- use argparse to parse arguments
+    - alternatives are https://github.com/fastapi/typer and click and fire
