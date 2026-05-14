@@ -60,3 +60,8 @@ cd ..
 - add simple error handling
 - add logging: `uv add loguru`
 - split our the argparse into a `main.py` and make it a module by adding a `__init__.py` file. now we have to call `uv run python -m duration_prediction.main --train-date 2022-01 --val-date 2022-02 --model-save-path model.bin` in order to run it. notice the -m for module mode in python.
+
+### create a makefile
+- create a folder `models` (`mkdir models`)
+- create the `Makefile` (`touch Makefile`)
+- now we can simply run `make train` instead of the uv command
