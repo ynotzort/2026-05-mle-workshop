@@ -29,3 +29,7 @@ cd ..
 ### install dependencies
 - `uv add scikit-learn==1.2.2 pandas pyarrow`
 - `uv add --dev jupyter seaborn`
+- now lets fix the error with numpy: `uv add numpy==1.26.4`
+
+### launch jupyter notebook
+- `uv run jupyter notebook`
