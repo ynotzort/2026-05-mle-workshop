@@ -1,5 +1,6 @@
 import argparse
 from datetime import date
+from loguru import logger
 
 import pandas as pd
 import pickle
@@ -35,8 +36,7 @@ def read_dataframe(filename: str) -> pd.DataFrame:
         df[categorical] = df[categorical].astype(str)
         return df
     except Exception as e:
-        print(f"ERROR: Could not get file: {filename}")
-        print(e)
+        logger.exception(f"Could not get file: {filename}, error: {e}")
         raise e
 
 
@@ -58,7 +58,8 @@ def train(train_date: date, val_date: date, out_path: str) -> float:
     val_url = base_url.format(year=val_date.year, month=val_date.month)
     df_train = read_dataframe(train_url)
     df_val = read_dataframe(val_url)
-    print(len(df_train), len(df_val))
+    logger.debug(f"df_train length is {len(df_train)}")
+    logger.debug(f"df_val length is {len(df_val)}")
 
     categorical = ["PULocationID", "DOLocationID"]
     numerical = ["trip_distance"]
@@ -77,7 +78,7 @@ def train(train_date: date, val_date: date, out_path: str) -> float:
     y_pred = pipeline.predict(val_dicts)
 
     mse = mean_squared_error(y_val, y_pred, squared=False)
-    print(mse)
+    logger.info(f"MSE is {mse}")
 
     with open(out_path, "wb") as f_out:
         pickle.dump(pipeline, f_out)

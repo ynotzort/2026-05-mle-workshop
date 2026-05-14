@@ -58,3 +58,4 @@ cd ..
     - now run with `uv run python duration_prediction/train.py --train-date 2022-01 --val-date 2022-02 --model-save-path model.bin`
 - add docstrings and typing
 - add simple error handling
+- add logging: `uv add loguru`
