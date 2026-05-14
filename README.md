@@ -25,3 +25,7 @@ cd ..
 ### create a uv project
 - initialize a uv project with `uv init --python 3.10`
 - run `uv sync`
+
+### install dependencies
+- `uv add scikit-learn==1.2.2 pandas pyarrow`
+- `uv add --dev jupyter seaborn`
