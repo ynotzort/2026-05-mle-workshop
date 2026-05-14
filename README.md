@@ -65,3 +65,10 @@ cd ..
 - create a folder `models` (`mkdir models`)
 - create the `Makefile` (`touch Makefile`)
 - now we can simply run `make train` instead of the uv command
+
+### tests
+- `uv add pytest`
+- `mkdir tests`
+- create a `__init__.py` inside the tests folder (`touch tests/__init__.py`)
+- create a `test_train.py` file inside the tests folder (has to start with `test_`)
+- run tests with `uv run pytest` or `make test`
