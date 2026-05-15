@@ -113,3 +113,7 @@ cd ..
 - run it via `docker run duration-prediction:latest`
 - or just use `make docker_run`
 
+### lets deploy it to the world via fly.io
+- install it via `curl -L https://fly.io/install.sh | sh` and then run as suggested `source ~/.bashrc`
+- login via `fly auth login`
+- deploy the app via `fly launch`
