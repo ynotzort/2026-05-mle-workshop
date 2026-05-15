@@ -91,3 +91,6 @@ cd ..
 - change the python virtual environment to use the correct day 2 environment: click on the bottom right where it said day_1 and click browse, then select `/workspaces/2026-05-mle-workshop/day_2/duration_pred_serve/.venv/bin/python` .
 - run the webserver via `uv run fastapi dev src/duration_pred_serve/ping.py`
 
+### implement serve functionality
+- implement simple loading of the model file
+- run it via `uv run python src/duration_pred_serve/serve.py`
