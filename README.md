@@ -75,6 +75,8 @@ cd ..
 
 
 ## day 2
+
+### create the project and add the dependencies
 - create a top level folder `day_2` and change into it (`mkdir day_2` and `cd day_2`)
 - create a new uv project: `uv init --lib --python 3.10 duration_pred_serve`
 - change dir into `duration_pred_serve` (via `cd duration_pred_serve`)
