@@ -95,3 +95,4 @@ cd ..
 - implement simple loading of the model file
 - run it via `uv run python src/duration_pred_serve/serve.py`
 - modify it it to contain a webserver and now run it via `uv run fastapi dev src/duration_pred_serve/serve.py` or via `make serve`
+- for testing lets create `predict-test.py` inside of a folder `scripts` and run it via `make predict-test`
