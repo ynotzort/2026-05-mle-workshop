@@ -1,3 +1,5 @@
+MODEL_PATH=./models/2022-01.bin
+export MODEL_PATH
 
 .PHONY: serve
 serve:

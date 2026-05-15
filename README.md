@@ -96,3 +96,13 @@ cd ..
 - run it via `uv run python src/duration_pred_serve/serve.py`
 - modify it it to contain a webserver and now run it via `uv run fastapi dev src/duration_pred_serve/serve.py` or via `make serve`
 - for testing lets create `predict-test.py` inside of a folder `scripts` and run it via `make predict-test`
+
+### environment variables
+- you can create environment variables via `export HELLO=world`, this creates a variable named `HELLO` with a value `world`
+- print out the value of a variable with `echo $HELLO`
+- remove the variable via `unset HELLO`
+- in python you can access those via `os.getenv()`
+- alternatively via `BaseSettings` from the package `pydantic_settings`
+- we define now `MODEL_PATH=./models/2022-01.bin`
+- we add the export into the Makefile
+

@@ -2,10 +2,18 @@ import pickle
 from typing import Any
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
+from pydantic_settings import BaseSettings
+from loguru import logger
 
-model_path = "models/2022-01.bin"
 
-with open(model_path, "rb") as f_in:
+class Settings(BaseSettings):
+    MODEL_PATH: str = "./model.bin"
+
+settings = Settings()
+
+logger.info(f"Model will be loaded from: {settings.MODEL_PATH}")
+
+with open(settings.MODEL_PATH, "rb") as f_in:
     model = pickle.load(f_in)
 
 ### server part
