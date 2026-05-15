@@ -107,3 +107,9 @@ cd ..
 - we add the export into the Makefile
 - add MODEL_VERSION also
 
+### use Docker
+- create a Dockerfile
+- build the image via `docker build -t duration-prediction:latest .`
+- run it via `docker run duration-prediction:latest`
+- or just use `make docker_run`
+
