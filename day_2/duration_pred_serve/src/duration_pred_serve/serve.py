@@ -8,46 +8,66 @@ from loguru import logger
 
 class Settings(BaseSettings):
     MODEL_PATH: str = "./model.bin"
+    MODEL_VERSION: str = "not_defined"
+
 
 settings = Settings()
 
+logger.info(f"Model version: {settings.MODEL_VERSION}")
 logger.info(f"Model will be loaded from: {settings.MODEL_PATH}")
 
 with open(settings.MODEL_PATH, "rb") as f_in:
     model = pickle.load(f_in)
 
+
 ### server part
 class PredictRequest(BaseModel):
     """Inputs required for the prediction."""
+
     PULocationID: str = Field(description="PickUp location ID")
     DOLocationID: str = Field(description="DropOff location ID")
     trip_distance: float = Field(description="Distance in km")
 
+
 class PredictionResponse(BaseModel):
     """Predicion result."""
-    prediction_duration_minutes: float = Field(description="Predicted trip duration in minutes")
+
+    prediction_duration_minutes: float = Field(
+        description="Predicted trip duration in minutes"
+    )
+    model_version: str = Field(
+        description="Model version that was used for the prediction"
+    )
+
 
 def prepare_features(predict_request: PredictRequest) -> dict[str, Any]:
     result = predict_request.model_dump()
     result["trip_distance"] = float(result["trip_distance"])
     return result
 
+
 def predict(model_input: dict[str, Any]) -> float:
     prediction = model.predict(model_input)
     return prediction[0]
 
+
 def post_process_model_output(prediction: float) -> float:
     return prediction
 
+
 app = FastAPI()
+
 
 @app.post("/predict")
 def predict_endpoint(predict_request: PredictRequest) -> PredictionResponse:
     model_input = prepare_features(predict_request)
     prediction_raw = predict(model_input)
     prediction = post_process_model_output(prediction_raw)
-    result = PredictionResponse(prediction_duration_minutes=prediction)
+    result = PredictionResponse(
+        prediction_duration_minutes=prediction, model_version=settings.MODEL_VERSION
+    )
     return result
+
 
 # trip_data = {
 #     "PULocationID": "43",

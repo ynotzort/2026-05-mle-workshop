@@ -105,4 +105,5 @@ cd ..
 - alternatively via `BaseSettings` from the package `pydantic_settings`
 - we define now `MODEL_PATH=./models/2022-01.bin`
 - we add the export into the Makefile
+- add MODEL_VERSION also
 
