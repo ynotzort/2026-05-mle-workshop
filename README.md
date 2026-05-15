@@ -72,3 +72,14 @@ cd ..
 - create a `__init__.py` inside the tests folder (`touch tests/__init__.py`)
 - create a `test_train.py` file inside the tests folder (has to start with `test_`)
 - run tests with `uv run pytest` or `make test`
+
+
+## day 2
+- create a top level folder `day_2` and change into it (`mkdir day_2` and `cd day_2`)
+- create a new uv project: `uv init --lib --python 3.10 duration_pred_serve`
+- change dir into `duration_pred_serve` (via `cd duration_pred_serve`)
+- add dependencies from day1: `uv add scikit-learn==1.2.2 numpy==1.26.4`
+- lets add testing and logging dependencies: `uv add pytest loguru`
+- add a webserver dependency: `uv add "fastapi[standard]"`
+- add requests dependency for testing the webserver `uv add --dev requests`
+- copy model over from day_1: (`mkdir models` and `cp ../../day_1/models/2022-01.bin models/`)
